@@ -11,14 +11,14 @@ module.exports = {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'react-hot!babel'
+      loader: 'react-hot-loader!babel-loader'
     }, {
       test: /\.css$/,
-      loader: 'style!css!postcss'
+      loader: 'style-loader!css-loader!postcss-loader'
     }]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['.js', '.jsx']
   },
   output: {
     path: __dirname + '/dist',
@@ -30,9 +30,14 @@ module.exports = {
     hot: true
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
-  postcss: function () {
-    return [autoprefixer];
-  }
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      // test: /\.xxx$/, // may apply this only for some modules
+      options: {
+        postcss: function () {
+          return [autoprefixer];
+        }
+      }
+    })
+  ]
 };
